@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Creates the Lambda function and API for the Pytorch inference application
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: demarkify-models
+    Description: The s3 bucket storing the Pytorch model artifacts
+  ObjectKey:
+    Type: String
+    Default: demarkify-models/demarkify/test_model_save.tar.gz
+    Description: The s3 object kley path of pytorch model artifacts
+  LambdaLayerArn:
+    Type: String
+    Default: "arn:aws:lambda:us-east-1:934676248949:layer:pytorchv1-py36:2"
+    Description: Pytorch lambda layer ARN (all the required packages). Defaults to "us-east-1".
+
+
+Globals:
+    Function:
+        Timeout: 30
+
+
+Resources:
+  PyTorchFunction:
+      Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+      Properties:
+          CodeUri: demarkify/
+          Handler: app.lambda_handler
+          Runtime: python3.6
+          MemorySize: 3008
+          Environment:
+            Variables:
+              MODEL_BUCKET: !Ref BucketName
+              MODEL_KEY: !Ref ObjectKey
+          Policies:
+            - S3ReadPolicy:
+                BucketName: !Ref BucketName
+          Layers:
+            - !Ref LambdaLayerArn 
+          Events:
+              PyTorch:
+                  Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+                  Properties:
+                      Path: /invocations
+                      Method: post
+
+
+Outputs:
+    PyTorchApi:
+      Description: "API Gateway endpoint URL for Prod stage for PyTorch function"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/invocations/"
+
+    PyTorchFunction:
+      Description: "PyTorch Lambda Function ARN"
+      Value: !GetAtt PyTorchFunction.Arn
+
+    PyTorchFunctionIamRole:
+      Description: "Implicit IAM Role created for PyTorch function"
+      Value: !GetAtt PyTorchFunctionRole.Arn             
