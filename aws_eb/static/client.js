@@ -1,0 +1,13 @@
+var el = x => document.getElementById(x);
+
+function showPicker(){
+    el("file-input").click();
+}
+
+function showPicked(input){
+    el("upload-label").innerHTML = input.files[0].name;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        
+    }
+}
