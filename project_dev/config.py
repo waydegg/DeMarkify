@@ -65,3 +65,8 @@ trn_tfms = [
 
 val_tfms = [crop_pad(use_on_y=False)] 
 tfms = (trn_tfms, val_tfms)
+
+### AWS
+# S3
+bucket = "demarkify-models"
+s3_fp = lambda export_fn: f"{bucket}/demarkify/{export_fn}.tar.gz"
