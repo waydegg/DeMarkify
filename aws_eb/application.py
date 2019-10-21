@@ -8,23 +8,17 @@ photos = UploadSet('photos', IMAGES)
 app.config["UPLOADED_PHOTOS_DEST"] = "static/images"
 configure_uploads(app, photos)
 
-# @app.route("/upload", methods=["GET","POST"])
-# def upload():
-#     if request.method == "POST" and "photo" in request.files:
-#         filename = photos.save(request.files["photo"])
-#         return filename
-#     return render_template("upload.html")
-
-@app.route("/", methods=["GET","POST"])
+@app.route("/")
 def index():
-
-    # if request.method == "POST":
-    #     filename = photos.save(request.files["photo"])
-    #     return filename
-    
-
-
     return render_template("index.html")
+
+@app.route("/analyze", methods=["POST"])
+def analyze(request):
+
+    # 1. call lambda function
+    img_data = await request.form()
+    img_bytes = await (img_data['file'].read())
+    img = open_image
 
 
 
