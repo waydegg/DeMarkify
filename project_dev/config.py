@@ -1,6 +1,5 @@
 from pathlib import Path
 from fastai.vision import *
-
 ### PATHING
 # Main
 PATH = Path("data")
@@ -9,20 +8,11 @@ MARKED = PATH/'marked'
 IMG_GEN = PATH/'image_gen'
 TEST = PATH/'test'
 
-MARKED.mkdir(exist_ok=True)
-IMG_GEN.mkdir(exist_ok=True)
-
 # Subset
 SUB = PATH/'subset'
 CLEAN_SUB = SUB/'clean_sub'
 MARKED_SUB = SUB/'marked_sub'
 IMG_GEN_SUB = SUB/'image_gen_sub'
-
-SUB.mkdir(exist_ok=True)
-CLEAN_SUB.mkdir(exist_ok=True)
-MARKED_SUB.mkdir(exist_ok=True)
-IMG_GEN_SUB.mkdir(exist_ok=True)
-
 
 ### MODELING
 proj_id = 'imagenet_all_new' # CHANGE WHEN RE-TRAINING MODELS

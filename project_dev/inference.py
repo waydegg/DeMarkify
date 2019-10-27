@@ -16,3 +16,53 @@ class markify_learner():
         self.model.data = get_data(1, (h,w), 1, CLEAN)
         gen_img = self.model.predict(img)[0]
         return gen_img
+
+def load_model(use_s3=True, saved_model=None):
+    if use_s3:
+        logger.info('Loading model from S3')    
+        obj = s3.get_object(Bucket=MODEL_BUCKET, Key=MODEL_KEY)
+        bytestream = io.BytesIO(obj['Body'].read())
+        tar = tarfile.open(fileobj=bytestream, mode="r:gz")
+    else:
+        tar = tarfile.open(saved_model, mode="r:gz")
+        
+    member = tar.getmembers()[0]
+    print("Model file is: ", member.name)
+    f = tar.extractfile(member)
+    print("Loading PyTorch model")
+    model = torch.jit.load(io.BytesIO(f.read()), map_location=torch.device('cpu')).eval()
+    return model
+
+def predict(input_object, model):
+    logger.info("Calling predictionn model")
+    start_time = time.time()
+    predict_values = model(input_object)
+    logger.info("--- Inference time: %s seconds ---" % (time.time() - start_time))
+    return predict_values
+
+def input_fn(request_body):
+    logger.info("Getting input URL to a image Tensor object")
+    if isinstance(request_body, str):
+        request_body = json.loads(request_body)
+    img_request = requests.get(request_body['url'], stream=True)
+    img = PIL.Image.open(io.BytesIO(img_request.content))
+    img_tensor = preprocess(img)
+    img_tensor = img_tensor.unsqueeze(0)
+    return img_tensor
+
+def lambda_handler(event, context):    
+    print("Starting event")
+    logger.info(event)
+    print("Getting input object")
+    input_object = input_fn(event['body'])
+    
+    print(input_object)
+    time.sleep(10)
+    
+    print("Calling prediction")
+    response = predict(input_object, model)
+    print("Returning response")
+    return{
+        "statusCode": 200,
+        "body": json.dumps(response)
+    }

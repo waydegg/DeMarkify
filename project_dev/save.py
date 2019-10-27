@@ -3,6 +3,7 @@ from fastai.basic_data import DataBunch
 from fastai.callback import *
 from fastai.basic_train import Learner, LearnerCallback
 from fastai.vision.gan import GANLearner
+import config
 
 class GANSaveCallback(LearnerCallback):
     "A `LearnerCallback` that saves history of metrics while training `learn` into CSV `filename`."
