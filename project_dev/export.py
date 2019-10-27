@@ -24,7 +24,7 @@ def s3_upload(trace_input, model, export_fn):
 
 
 if __name__ == "__main__":
-    model_to_upload = markify_learner("/mnt/nvme/backup/models", "demarkify_original.pkl").model
+    model_to_upload = markify_learner("data/models", "demarkify_original.pkl").model
     model_trace_input = torch.ones(1,3,512,512).cuda()
     s3_upload(model_trace_input, model_to_upload, "serialized_baseline")
 
