@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Creates the Lambda function and API for the Pytorch inference application
+Parameters:
+  BucketName:
+    Type: String
+    Default: demarkify-models
+    Description: The s3 bucket storing the Pytorch model artifacts
+  ObjectKey:
+    Type: String
+    Default: demarkify-models/serialized_baseline_01.tar.gz
+    Description: The s3 object kley path of pytorch model artifacts
+  ImgbbKey:
+    Type: String
+    Default: 578ce2804a501d6c487ac83d34ad950f
+    Description: Api key for uploading to Imgbb
+  LambdaLayerArn:
+    Type: String
+    Default: arn:aws:lambda:us-east-1:934676248949:layer:pytorchv1-py36:2
+    Description: Pytorch lambda layer ARN (all the required packages). Defaults to
+      "us-east-1".
+Globals:
+  Function:
+    Timeout: 60
+Resources:
+  PyTorchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://demarkify-sam/5cb68e5233b21fe42dedc2e39085575b
+      Handler: app.lambda_handler
+      Runtime: python3.6
+      MemorySize: 3008
+      Environment:
+        Variables:
+          MODEL_BUCKET:
+            Ref: BucketName
+          MODEL_KEY:
+            Ref: ObjectKey
+          IMGBB_KEY:
+            Ref: ImgbbKey
+      Policies:
+      - S3ReadPolicy:
+          BucketName:
+            Ref: BucketName
+      Layers:
+      - Ref: LambdaLayerArn
+      Events:
+        PyTorch:
+          Type: Api
+          Properties:
+            Path: /invocations
+            Method: post
+Outputs:
+  PyTorchApi:
+    Description: API Gateway endpoint URL for Prod stage for PyTorch function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/invocations/
+  PyTorchFunction:
+    Description: PyTorch Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - PyTorchFunction
+      - Arn
+  PyTorchFunctionIamRole:
+    Description: Implicit IAM Role created for PyTorch function
+    Value:
+      Fn::GetAtt:
+      - PyTorchFunctionRole
+      - Arn

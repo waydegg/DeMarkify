@@ -7,6 +7,7 @@ CLEAN = PATH/'clean'
 MARKED = PATH/'marked'
 IMG_GEN = PATH/'image_gen'
 TEST = PATH/'test'
+MODELS = PATH/'models'
 
 # Subset
 SUB = PATH/'subset'
@@ -59,4 +60,7 @@ tfms = (trn_tfms, val_tfms)
 ### AWS
 # S3
 bucket = "demarkify-models"
-s3_fp = lambda export_fn: f"{bucket}/demarkify/{export_fn}.tar.gz"
+s3_fp = lambda export_fn: f"{bucket}/{export_fn}.tar.gz"
+
+MODEL_BUCKET = "demarkify-models"
+MODEL_KEY = "serialized_baseline_01.tar.gz"

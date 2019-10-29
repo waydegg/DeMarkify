@@ -1,6 +1,7 @@
 from fastai.vision import *
 from util import *
 from config import *
+import boto3
 
 class markify_learner():
     def __init__(self, model_path, fn):
@@ -19,7 +20,7 @@ class markify_learner():
 
 def load_model(use_s3=True, saved_model=None):
     if use_s3:
-        logger.info('Loading model from S3')    
+        s3 = boto3.client('s3')
         obj = s3.get_object(Bucket=MODEL_BUCKET, Key=MODEL_KEY)
         bytestream = io.BytesIO(obj['Body'].read())
         tar = tarfile.open(fileobj=bytestream, mode="r:gz")
@@ -34,14 +35,10 @@ def load_model(use_s3=True, saved_model=None):
     return model
 
 def predict(input_object, model):
-    logger.info("Calling predictionn model")
-    start_time = time.time()
     predict_values = model(input_object)
-    logger.info("--- Inference time: %s seconds ---" % (time.time() - start_time))
     return predict_values
 
 def input_fn(request_body):
-    logger.info("Getting input URL to a image Tensor object")
     if isinstance(request_body, str):
         request_body = json.loads(request_body)
     img_request = requests.get(request_body['url'], stream=True)
@@ -52,7 +49,6 @@ def input_fn(request_body):
 
 def lambda_handler(event, context):    
     print("Starting event")
-    logger.info(event)
     print("Getting input object")
     input_object = input_fn(event['body'])
     
