@@ -17,7 +17,7 @@ Parameters:
     Description: Api key for uploading to Imgbb
   LambdaLayerArn:
     Type: String
-    Default: "arn:aws:lambda:us-east-1:934676248949:layer:pytorchv1-py36:2"
+    Default: "arn:aws:lambda:us-east-2:934676248949:layer:pytorchv1-py36:2"
     Description: Pytorch lambda layer ARN (all the required packages). Defaults to "us-east-1".
 
 

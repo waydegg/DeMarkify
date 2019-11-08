@@ -16,7 +16,7 @@ Parameters:
     Description: Api key for uploading to Imgbb
   LambdaLayerArn:
     Type: String
-    Default: arn:aws:lambda:us-east-1:934676248949:layer:pytorchv1-py36:2
+    Default: arn:aws:lambda:us-east-2:934676248949:layer:pytorchv1-py36:2
     Description: Pytorch lambda layer ARN (all the required packages). Defaults to
       "us-east-1".
 Globals:
@@ -26,7 +26,7 @@ Resources:
   PyTorchFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://demarkify-sam/5cb68e5233b21fe42dedc2e39085575b
+      CodeUri: s3://demarkify-sam-src/d5fc1319e2922c41890737f3f8f7c246
       Handler: app.lambda_handler
       Runtime: python3.6
       MemorySize: 3008
