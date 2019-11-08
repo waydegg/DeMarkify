@@ -9,7 +9,7 @@ Parameters:
     Description: The s3 bucket storing the Pytorch model artifacts
   ObjectKey:
     Type: String
-    Default: demarkify-models/serialized_baseline_01.tar.gz
+    Default: serialized_baseline_01.tar.gz
     Description: The s3 object kley path of pytorch model artifacts
   ImgbbKey:
     Type: String

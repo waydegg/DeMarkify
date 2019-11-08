@@ -15,8 +15,6 @@ import boto3
 import requests
 import PIL
 
-import pdb
-
 import torch
 import torch.nn.functional as F
 from torchvision import models, transforms
@@ -109,6 +107,13 @@ def lambda_handler(event, context):
     print("Calling prediction")
     response = predict(input_object, model, local_repo)
     print("Returning response")
+    
+    # return{
+    #     "statusCode":200,
+    #     "body": json.dumps("TEST OUTPUT")
+    # }
+    
+    
     return{
         "statusCode": 200,
         "body": json.dumps(response)

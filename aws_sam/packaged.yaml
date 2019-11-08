@@ -8,7 +8,7 @@ Parameters:
     Description: The s3 bucket storing the Pytorch model artifacts
   ObjectKey:
     Type: String
-    Default: demarkify-models/serialized_baseline_01.tar.gz
+    Default: serialized_baseline_01.tar.gz
     Description: The s3 object kley path of pytorch model artifacts
   ImgbbKey:
     Type: String
@@ -26,7 +26,7 @@ Resources:
   PyTorchFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://demarkify-sam-src/d5fc1319e2922c41890737f3f8f7c246
+      CodeUri: s3://demarkify-sam/c4c99c92a59089eaeabff2b786228472
       Handler: app.lambda_handler
       Runtime: python3.6
       MemorySize: 3008
