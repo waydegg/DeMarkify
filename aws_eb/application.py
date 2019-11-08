@@ -12,13 +12,13 @@ configure_uploads(app, photos)
 def index():
     return render_template("index.html")
 
-@app.route("/analyze", methods=["POST"])
-def analyze(request):
+# @app.route("/analyze", methods=["POST"])
+# def analyze(request):
 
-    # 1. call lambda function
-    img_data = await request.form()
-    img_bytes = await (img_data['file'].read())
-    img = open_image
+#     # 1. call lambda function
+#     img_data = await request.form()
+#     img_bytes = await (img_data['file'].read())
+#     img = open_image
 
 
 
