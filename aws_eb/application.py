@@ -13,13 +13,23 @@ def index():
     return render_template("index.html")
 
 @app.route("/analyze", methods=["POST"])
-async def analyze(request):
+def analyze():
+    jsdata = request.form['result']
+    return jsdata
+
+    # if request.method == 'POST':
+    #     return jsonify("TEST RESULT")
+    
+    
     # 1. load image
     # img_data = request.form()
     # img_bytes = (img_data["file"].read())
     # img = open_image(BytesIO(image_bytes))
     
-    return await jsonify({'result': 'TEST RESULT'})
+    # return jsonify({'result': 'TEST RESULT'})
+    # return JSONResponse({'result': "TEST RESULT"})
+    # return "NOTHING"
+
     
 
 
