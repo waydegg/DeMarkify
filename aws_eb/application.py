@@ -1,12 +1,7 @@
 from flask import Flask, render_template, request, jsonify
-# from flask_uploads import UploadSet, configure_uploads, IMAGES
+import json
 
 app = Flask(__name__)
-
-# photos = UploadSet('photos', IMAGES)
-
-# app.config["UPLOADED_PHOTOS_DEST"] = "static/images"
-# configure_uploads(app, photos)
 
 @app.route("/")
 def index():
@@ -14,9 +9,10 @@ def index():
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
-    jsdata = request.form['result']
-    return jsdata
+    print("The Request:")
+    print(json.dumps(request.form["input"]))
 
+    return jsonify({"result":"TEST RESULT"})
     # if request.method == 'POST':
     #     return jsonify("TEST RESULT")
     
