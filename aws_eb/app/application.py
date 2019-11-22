@@ -4,18 +4,19 @@ import base64
 from requests_html import HTMLSession
 import pdb
 
-app = Flask(__name__)
+application = Flask(__name__)
 session = HTMLSession()
 
 IMGBB_KEY = '578ce2804a501d6c487ac83d34ad950f'
 api_endpoint = "https://u97xxuvmpc.execute-api.us-east-2.amazonaws.com/Prod/invocations/"
 
 
-@app.route("/")
+@application.route("/")
+@application.route("/index")
 def index():
     return render_template("index.html")
 
-@app.route("/analyze", methods=["POST"])
+@application.route("/analyze", methods=["POST"])
 def analyze():
 
     # 1. upload image to imgbb
@@ -41,7 +42,4 @@ def analyze():
 
 
 if __name__ == "__main__":
-    if "serve" in sys.argv:
-        app.run(host='0.0.0.0', port=5000, debug=False)
-    else:
-        app.run(debug=True)
+    application.run(debug=False)
