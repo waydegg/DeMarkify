@@ -1,4 +1,4 @@
 __pycache__
-data
+project_dev/data
 .ipynb_checkpoints
 aws_sam/.aws-sam
