@@ -32,7 +32,7 @@ def get_dls(bs, size, keep_pct):
     return dls
 
 
-def create_gen_learner(dls_gen, arch, loss_gen, y_range):
+def create_gen_learner(dls_gen, arch, loss_gen, y_range=(-3., 3.)):
     "Builds a Generator Learner"
     return unet_learner(dls_gen, arch, loss_func=loss_gen,
                         config=unet_config(blur=True, norm_type=NormType.Weight,

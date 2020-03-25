@@ -1,3 +1,4 @@
+from config import *
 import pdb
 from fastai2.basics import *
 from fastai2.vision.all import *
@@ -41,7 +42,6 @@ class Markr:
             print(f"Failed on img {fn}:\n {e}")
             self.failed_images.append(fn)
 
-
     def draw_repeating_text(self, img, blank_img):
         """
         Repeats text across an image.
@@ -50,7 +50,6 @@ class Markr:
             img: A PIL image object used as the background (the original image).
             blank_img: A "trasparent" PIL image object used as the foreground (the watermark).
         """
-
         # Configuration
         w, h = img.size
         draw_blank = ImageDraw.Draw(blank_img)
